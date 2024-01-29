@@ -1,0 +1,84 @@
+VERIFICA QUAL CONTAINERS ESTÃO ATIVOS:
+docker ps
+
+VERIFICA QUAL CONTAINERS ESTÃO ATIVOS E JÁ FORAM EXECUTADOS ANTERIORMENTE:
+docker ps -a
+
+EXECUTA O DOCKER COM A IMAGEM UBUNTU. COMANDO SE MANTEM ATIVO POR CONTA DO BASH. 
+docker run -it ubuntu bash
+
+ctrl D --> finaliza o processo - container não funciona mais
+
+START NO CONTAINER
+docker start nome_container ou id_container
+
+PARAR A EXECUÇÃO DE UM CONTAINER
+docker stop container_id ou container_name
+
+EXECUTA O CONTAINER E AO SAIR O CONTAINER JÁ É FINALIZADO
+docker run -it --rm ubuntu bash
+
+AO ACESSAR A PORTA 8080 DA MÁQUINA LOCAL - O DOCKER REDIRECIONARÁ PARA A PORTA 80 DO NGINX. PORTA PUBLICADA
+docker run -d -p 8080:80 nginx
+
+** -d -> libera o terminal
+** -p -> para definir a portal local que acessará o servidor
+
+REMOVER CONTAINER - APENAS CONTAINERS PARADOS
+docker rm id_container
+
+FORÇANDO A REMOÇÃO DE CONTAINERS EM EXECUÇÃO
+docker rm id_container -f
+
+EXECUTA UM COMANDO NO CONTAINER
+docker exec
+EXPS: 
+docker exec nginix (container em execução) ls
+
+ACESSA O BASH DO CONTAINER nginx
+docker exec -it nginx bash
+
+--> acessar um arquivo dentro do container, exp:
+cd /usr/share/nginx/html/
+
+--> editar o arquivo
+apt-get update
+apt-get install vim (instala o vim)
+para editar, apertar i --> fazer a edição -> apertar esc --> :w enter para salvar --> :q para sair
+
+MONTAR A PASTA DO COMPUTADOR PARA DENTRO DO CONTAINER
+EXP:
+docker run -d --name nginx -p 8080:80 -v CAMINHO LOCAL:CAMINHO CONTAINER nginx
+
+** -v -> cria a pasta caso não exista. Caso eu tente utilizar --mount, será apontado um erro caso a pasta mencionada não exista.
+
+MESMO PROCESSO ACIMA UTILIZANDO BIND MOUNTS, PORÉM, INSERINDO OS CAMINHOS
+docker run -d --name nginx -p 8080:80 --mount type=bind,source="$(pwd)"/hmtl,target=/usr/share/nginx/html nginx
+
+** "$(pwd)" -> pega todo o caminho local
+
+CRIAR VOLUME
+docker volume create nomevolume
+
+VERIFICA AS IMAGENS EXISTENTES
+docker images
+
+REMOVE UMA IMAGEM
+docker rmi repository:tag --> docker rmi php:rc-apine
+
+BUILD DA IMAGEM
+docker build -t luizspolador/nginix-fullcycle .
+
+VALIDANDO A IMAGEM LOCALMENTE -> localhost
+docker run --rm -d -p 8080:80 luizspolador/nginix-fullcycle
+
+PARA ACESSAR O DOCKERHUB E PUPLICAR A IMAGEM
+docker login -> logar
+docker logout -> deslogar
+
+inserir luizspolador
+inserir senha
+enter
+
+docker push luizspolador/nginix/fullcycle
+
