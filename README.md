@@ -1,1 +1,1 @@
-docker - curso
+docker - principais comandos.
